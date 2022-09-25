@@ -6,8 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Folder {
@@ -38,8 +38,8 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? //@db.Text
-  access_token      String? //@db.Text
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
   expires_at        Int?
   token_type        String?
   scope             String?
