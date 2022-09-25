@@ -22,7 +22,7 @@ export default function AvatarMenu({ user }) {
 
       <DropdownMenu.Portal>
         <StyledContent sideOffset={5}>
-          <DropdownMenu.Arrow fill='#c5ffe6' />
+          <DropdownMenu.Arrow fill='#6176ff' />
           <StyledItem onSelect={() => signOut()}>Logout</StyledItem>
         </StyledContent>
       </DropdownMenu.Portal>

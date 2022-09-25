@@ -4,12 +4,26 @@ import {
   deleteLinkSchema,
   updateLinkSchema,
 } from '@/types/link';
+import { z } from 'zod';
 
 export const linkRouter = t.router({
   // get all link route
-  getAllLinks: protectedRouter.query(async ({ ctx }) => {
-    return await ctx.prisma?.link.findMany();
-  }),
+  getAllLinks: protectedRouter
+    .input(
+      z.object({
+        id: z.string().cuid(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      if (input.id) {
+        return await ctx.prisma?.link.findMany({
+          where: { folderId: input.id },
+          orderBy: {
+            createdAt: 'desc',
+          },
+        });
+      }
+    }),
   // create link route
   createLink: protectedRouter.input(createLinkSchema).mutation(
     async ({ ctx, input }) =>
@@ -17,6 +31,7 @@ export const linkRouter = t.router({
         data: {
           url: input.url,
           title: input.title,
+          type: input.type,
           folderId: input.folderId,
         },
       })
@@ -31,6 +46,7 @@ export const linkRouter = t.router({
         data: {
           url: input.url,
           title: input.title,
+          type: input.type,
           folderId: input.folderId,
         },
       })
@@ -38,7 +54,7 @@ export const linkRouter = t.router({
   //delete link route
   deleteLink: protectedRouter
     .input(deleteLinkSchema)
-    .query(async ({ ctx, input }) => {
+    .mutation(async ({ ctx, input }) => {
       return await ctx.prisma?.link.delete({
         where: {
           id: input.id,

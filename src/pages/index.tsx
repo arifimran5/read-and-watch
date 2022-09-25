@@ -1,6 +1,7 @@
 import { trpc } from '@/utils/trpc';
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import Link from 'next/link';
 
 const Home: NextPage = () => {
   const { data: message } = trpc.hello.useQuery();
@@ -13,6 +14,8 @@ const Home: NextPage = () => {
       </Head>
 
       <h1>{message?.message}</h1>
+
+      <Link href='/dashboard'>Go to Dashboard</Link>
     </div>
   );
 };

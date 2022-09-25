@@ -24,6 +24,7 @@ model Link {
   id        String   @id @default(cuid())
   url       String
   title     String?
+  type      String?
   Folder    Folder?  @relation(fields: [folderId], references: [id])
   folderId  String?
   createdAt DateTime @default(now())

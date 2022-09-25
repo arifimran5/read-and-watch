@@ -4,11 +4,14 @@ import {
   deleteFolderSchema,
   updateFolderSchema,
 } from '@/types/link';
+import { z } from 'zod';
 
 export const folderRouter = t.router({
   // get all folder route
   getAllFolders: protectedRouter.query(async ({ ctx }) => {
-    return await ctx.prisma?.folder.findMany();
+    return await ctx.prisma?.folder.findMany({
+      orderBy: { createdAt: 'desc' },
+    });
   }),
   // create folder route
   createFolder: protectedRouter.input(createFolderSchema).mutation(
@@ -24,6 +27,16 @@ export const folderRouter = t.router({
         },
       })
   ),
+  // get folder by id route
+  getFolderById: protectedRouter
+    .input(z.object({ id: z.string().cuid() }))
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma?.folder.findUnique({
+        where: {
+          id: input.id,
+        },
+      });
+    }),
   // update folder route
   updateFolder: protectedRouter.input(updateFolderSchema).mutation(
     async ({ ctx, input }) =>
