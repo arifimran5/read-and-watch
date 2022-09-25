@@ -4,6 +4,7 @@ import * as trpcNext from '@trpc/server/adapters/next';
 import { getServerAuthSession } from '@/utils/get-server-side-auth';
 import { initTRPC } from '@trpc/server';
 import superjson from 'superjson';
+import { prisma } from '@/utils/prisma';
 
 type CreateContextOptions = {
   session: Session | null;
