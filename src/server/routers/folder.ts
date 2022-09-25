@@ -10,6 +10,9 @@ export const folderRouter = t.router({
   // get all folder route
   getAllFolders: protectedRouter.query(async ({ ctx }) => {
     return await ctx.prisma?.folder.findMany({
+      where: {
+        userId: ctx.session.user.id,
+      },
       orderBy: { createdAt: 'desc' },
     });
   }),

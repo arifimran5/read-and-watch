@@ -12,7 +12,7 @@ export default function AddFolder() {
 
   const { mutate: createFolder } = trpc.createFolder.useMutation({
     onSuccess: () => {
-      utils.getAllLinks.refetch();
+      utils.getAllFolders.refetch();
     },
   });
 

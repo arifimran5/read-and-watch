@@ -8,6 +8,7 @@ import { GrFormPreviousLink } from 'react-icons/gr';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import Header from '@/components/Header/Header';
+import Head from 'next/head';
 
 export default function FolderPage({ folderId }) {
   const router = useRouter();
@@ -24,6 +25,14 @@ export default function FolderPage({ folderId }) {
 
   return (
     <>
+      <Head>
+        <title>Folder | Read&Watch</title>
+        <meta
+          name='description'
+          content='This is the folder pages that consists all links'
+        />
+        <link rel='icon' href='/favicon.ico' />
+      </Head>
       <FolderPageWrapper>
         <Header />
         <Link href='/dashboard'>

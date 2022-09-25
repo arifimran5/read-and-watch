@@ -5,11 +5,24 @@ import { GrEdit, GrTrash } from 'react-icons/gr';
 import styled from 'styled-components';
 
 export default function FolderList() {
-  const { data: folders, isLoading } = trpc.getAllFolders.useQuery();
-
+  const { data: folders, isLoading, refetch } = trpc.getAllFolders.useQuery();
+  const deleteFolder = trpc.deleteFolder.useMutation({
+    onSuccess: () => {
+      refetch();
+    },
+  });
   if (isLoading) {
     return <div>loading...</div>;
   }
+
+  const deleteLinkHandler = (id) => {
+    const conf = confirm('Are you sure you want to delete this folder?');
+    if (conf === true) {
+      deleteFolder.mutate({ id });
+    } else {
+      return;
+    }
+  };
   return (
     <section>
       {folders?.map((folder) => (
@@ -27,7 +40,7 @@ export default function FolderList() {
             <LinkActionButton>
               <GrEdit />
             </LinkActionButton>
-            <LinkActionButton>
+            <LinkActionButton onClick={() => deleteLinkHandler(folder.id)}>
               <GrTrash />
             </LinkActionButton>
           </LinkActions>
