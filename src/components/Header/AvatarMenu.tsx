@@ -1,6 +1,5 @@
 import styled, { keyframes } from 'styled-components';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import Image from 'next/image';
 import { signOut } from 'next-auth/react';
 import { useState } from 'react';
 

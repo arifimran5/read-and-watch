@@ -1,8 +1,7 @@
 import AddFolder from '@/components/Folder/AddFolder';
 import FolderList from '@/components/Folder/FolderList';
 import Header from '@/components/Header/Header';
-import { trpc } from '@/utils/trpc';
-import { useSession, signOut } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';

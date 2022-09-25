@@ -11,7 +11,7 @@ export default function Header() {
       <nav>
         <h1>Read&Watch</h1>
       </nav>
-      <div>
+      <div title={`Welcome, ${user?.name}`}>
         <AvatarMenu user={user} />
       </div>
     </HeaderWrapper>
