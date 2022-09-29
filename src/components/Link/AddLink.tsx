@@ -58,6 +58,11 @@ const StyledForm = styled.form`
   display: flex;
   align-items: center;
   gap: 0.5em;
+
+  @media (max-width: 624px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
 `;
 
 const StyledFormInput = styled.input`

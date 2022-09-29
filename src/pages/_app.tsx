@@ -6,10 +6,15 @@ import GlobalCss from '@/styles/global.css';
 import styled from 'styled-components';
 
 const AppWrapper = styled.main`
-  margin-inline: 1em;
-
+  @media (max-width: 450px) {
+    padding-inline: 0.1em;
+  }
   @media (max-width: 600px) {
     padding-inline: 0.4em;
+  }
+
+  @media (min-width: 600px) {
+    padding-inline: 1em;
   }
 `;
 

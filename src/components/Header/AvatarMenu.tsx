@@ -2,15 +2,18 @@ import styled, { keyframes } from 'styled-components';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { signOut } from 'next-auth/react';
 import { useState } from 'react';
+import Image from 'next/image';
 
 export default function AvatarMenu({ user }) {
   const [menuOpen, setMenuOpen] = useState(true);
+
+  if (!user) return null;
+
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
         <Avatar>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             src={user?.image as string}
             width={40}
             height={40}

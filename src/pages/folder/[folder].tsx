@@ -19,9 +19,16 @@ export default function FolderPage({ folderId }) {
       router.push('/login');
     },
   });
-  const { data: folderData } = trpc.getFolderById.useQuery({
-    id: folderId as string,
-  });
+  const { data: folderData } = trpc.getFolderById.useQuery(
+    {
+      id: folderId as string,
+    },
+    {
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      refetchInterval: 30000,
+    }
+  );
 
   return (
     <>

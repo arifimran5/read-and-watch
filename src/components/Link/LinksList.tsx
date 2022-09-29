@@ -2,9 +2,16 @@ import { trpc } from '@/utils/trpc';
 import Link from './Link';
 
 export default function LinksList({ folderId }) {
-  const { data, isLoading, isError } = trpc.getAllLinks.useQuery({
-    id: folderId as string,
-  });
+  const { data, isLoading, isError } = trpc.getAllLinks.useQuery(
+    {
+      id: folderId as string,
+    },
+    {
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      refetchInterval: 30000,
+    }
+  );
 
   if (isLoading) {
     return <div>Loading...</div>;

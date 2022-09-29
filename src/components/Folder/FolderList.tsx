@@ -5,7 +5,16 @@ import { GrEdit, GrTrash } from 'react-icons/gr';
 import styled from 'styled-components';
 
 export default function FolderList() {
-  const { data: folders, isLoading, refetch } = trpc.getAllFolders.useQuery();
+  const {
+    data: folders,
+    isLoading,
+    refetch,
+  } = trpc.getAllFolders.useQuery(undefined, {
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchInterval: 30000,
+  });
+
   const deleteFolder = trpc.deleteFolder.useMutation({
     onSuccess: () => {
       refetch();
