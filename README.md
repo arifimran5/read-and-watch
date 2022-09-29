@@ -17,3 +17,25 @@ This is a simple web app that allows you to organize your reading and watchlist 
 - next-auth
 - prisma
 
+
+
+Local development setup
+  
+  ```bash
+  git clone https://github.com/arifimran5/read-and-watch.git
+  ```
+
+  ```bash
+  cd read-and-watch
+  ```
+
+  ```bash
+  npm install
+  ```
+
+setup google oAuth &
+Add required variables in .env file
+
+  ```bash
+  npm run dev
+  ```
