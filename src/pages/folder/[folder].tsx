@@ -1,7 +1,14 @@
 import AddLink from '@/components/Link/AddLink';
 import LinksList from '@/components/Link/LinksList';
 import { trpc } from '@/utils/trpc';
-import { GetServerSideProps, GetServerSidePropsContext } from 'next';
+import {
+  GetServerSideProps,
+  GetServerSidePropsContext,
+  // GetStaticPaths,
+  // GetStaticProps,
+  // GetStaticPropsContext,
+  // InferGetStaticPropsType,
+} from 'next';
 import Link from 'next/link';
 import styled from 'styled-components';
 import { GrFormPreviousLink } from 'react-icons/gr';
@@ -9,6 +16,11 @@ import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import Header from '@/components/Header/Header';
 import Head from 'next/head';
+// import { appRouter } from '@/server/routers/app';
+// import superjson from 'superjson';
+// import { createProxySSGHelpers } from '@trpc/react/ssg';
+// import { t } from '@/server/context';
+// import { prisma } from '@/utils/prisma';
 
 export default function FolderPage({ folderId }) {
   const router = useRouter();
@@ -33,10 +45,10 @@ export default function FolderPage({ folderId }) {
   return (
     <>
       <Head>
-        <title>Folder | Read&Watch</title>
+        <title>{folderData?.title} | Read&Watch</title>
         <meta
           name='description'
-          content='This is the folder pages that consists all links'
+          content={`This is the folder pages that consists all links of ${folderData?.title}`}
         />
         <link rel='icon' href='/favicon.ico' />
       </Head>
@@ -96,3 +108,45 @@ export const getServerSideProps: GetServerSideProps = async (
     },
   };
 };
+
+// export const getStaticProps: GetStaticProps = async (
+//   context: GetStaticPropsContext<{ folder: string }>
+// ) => {
+//   const ssg = await createProxySSGHelpers({
+//     router: appRouter,
+//     ctx: t._config.ctx,
+//     transformer: superjson, // optional - adds superjson serialization
+//   });
+
+//   const folderId = context.params?.folder as string;
+
+//   await ssg.getAllLinks.fetch({ id: folderId });
+
+//   console.log('folderId', folderId);
+
+//   // const folderId = await getFolderId(context);
+//   return {
+//     props: {
+//       folderId,
+//       trpcState: ssg.dehydrate(),
+//     },
+//     revalidate: 10,
+//   };
+// };
+
+// export const getStaticPaths: GetStaticPaths = async () => {
+//   const folders = await prisma?.folder.findMany({
+//     select: {
+//       id: true,
+//     },
+//   });
+
+//   return {
+//     paths: folders.map((fold) => ({
+//       params: {
+//         id: fold.id.toString(),
+//       },
+//     })),
+//     fallback: 'blocking',
+//   };
+// };
