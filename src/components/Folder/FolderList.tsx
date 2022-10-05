@@ -1,10 +1,16 @@
 import { timeAgo } from '@/utils/time-map';
 import { trpc } from '@/utils/trpc';
 import Link from 'next/link';
-import { GrEdit, GrTrash } from 'react-icons/gr';
+import { useState } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { GrEdit, GrTrash, GrSave } from 'react-icons/gr';
 import styled from 'styled-components';
 
 export default function FolderList() {
+  const [edit, setEdit] = useState(false);
+  const [currEdit, setCurrEdit] = useState('');
+  const { register, handleSubmit } = useForm();
+
   const {
     data: folders,
     isLoading,
@@ -13,6 +19,14 @@ export default function FolderList() {
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchInterval: 30000,
+  });
+
+  const { mutate: updateFolder } = trpc.updateFolder.useMutation({
+    onSuccess: () => {
+      refetch();
+      setEdit(false);
+      setCurrEdit('');
+    },
   });
 
   const deleteFolder = trpc.deleteFolder.useMutation({
@@ -32,13 +46,31 @@ export default function FolderList() {
       return;
     }
   };
+
+  const handleEdit = (id) => {
+    setEdit(true);
+    setCurrEdit(id);
+  };
+  const onSave = (data) => {
+    setEdit(false);
+    updateFolder({ id: currEdit, title: data.edit_title });
+  };
+
   return (
     <section>
       {folders?.map((folder) => (
         <FolderWrapper key={folder.id}>
           <div>
             <FolderTitle>
-              <Link href={`/folder/${folder.id}`}>{folder.title}</Link>
+              {folder.id === currEdit && edit ? (
+                <input
+                  type='text'
+                  defaultValue={folder.title}
+                  {...register('edit_title')}
+                />
+              ) : (
+                <Link href={`/folder/${folder.id}`}>{folder.title}</Link>
+              )}
             </FolderTitle>
             <FolderDetails>
               <span>{timeAgo(folder.createdAt)}</span>
@@ -46,8 +78,13 @@ export default function FolderList() {
           </div>
 
           <LinkActions>
-            <LinkActionButton>
-              <GrEdit />
+            <LinkActionButton data-edit={edit && folder.id === currEdit}>
+              {/* <GrEdit /> */}
+              {edit && folder.id === currEdit ? (
+                <GrSave onClick={handleSubmit(onSave)} />
+              ) : (
+                <GrEdit onClick={() => handleEdit(folder.id)} />
+              )}
             </LinkActionButton>
             <LinkActionButton onClick={() => deleteLinkHandler(folder.id)}>
               <GrTrash />
@@ -126,6 +163,10 @@ const LinkActionButton = styled.button`
   }
 
   &:first-child {
+    &[data-edit='true'] {
+      background-color: #61ff6b;
+    }
+
     &:hover {
       background-color: #6176ff;
     }
@@ -134,5 +175,9 @@ const LinkActionButton = styled.button`
     &:hover {
       background-color: #ff6161;
     }
+  }
+
+  svg {
+    height: 45px;
   }
 `;
